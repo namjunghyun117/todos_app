@@ -19,14 +19,32 @@
                 </label>
                 <input id="todo_name" name="todo_name" value="{{current_todo.name}}">
             </div>
-            <div>
-                <label for="todo_status">
-                    Status:
-                </label>
-                <input id="todo_status" name="todo_status" value="{{current_todo.status}}">
-            </div>
+            <select id="todo_status" name="todo_status">
+                <option value="complete" {%if current_todo.status == "complete"%} selected {%endif%}>
+                    Complete
+                </option>
+                <option value="in_progress" {%if current_todo.status == "in_progress"%} selected {%endif%}>
+                    In Progress
+                </option>
+                <option value="paused" {%if current_todo.status == "paused"%} selected {%endif%}>
+                    Paused
+                </option>
+                <option value="cancelled" {%if current_todo.status == "cancelled"%} selected {%endif%}>
+                    Cancelled
+                </option>
+            </select>
             <button type="submit" class="btn btn-success">
                 Update todo
+            </button>
+        </form>
+        <form action="/todos" method="GET">
+            <button class="btn btn-warning">
+                Home
+            </button>
+        </form>
+        <form action="/logout" method="POST">
+            <button class="btn btn-info">
+                Logout
             </button>
         </form>
     <div>

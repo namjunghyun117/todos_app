@@ -4,28 +4,30 @@ from flask_app.models.todos_model import Todo
 
 @app.route("/todos", methods=["GET"])
 def get_todos():
-    session["full_name"] = "Jung Nam"
-    session["user_id"] = 2
-    list_of_todos = Todo.get_all()
-    return render_template("home.html", list_of_todos=list_of_todos)
+    if "user_id" not in session:
+        return redirect("/")
+    else:
+        list_of_todos = Todo.get_all()
+        return render_template("home.html", list_of_todos=list_of_todos)
 
 @app.route("/todo/form", methods=["GET"])
 def display_todo_form():
-    if "full_name" in session:
-        current_user = session["full_name"]
-        print(current_user)
-        # session['full_name'] = "Jung Hyun Nam"
-        return render_template("todo_form.html")
+    if "user_id" not in session:
+        return redirect("/")
     else:
-        return redirect("/todos")
+        current_user = session["full_name"]
+        return render_template("todo_form.html")
     
 @app.route("/todo/edit_form/<int:id>", methods=["GET"])
 def display_edit_todo_form(id):
-    todo = {
-        "todo_id" : id
-    }
-    current_todo = Todo.get_one(todo)
-    return render_template("update_todo_form.html", current_todo=current_todo)
+    if "user_id" not in session:
+        return redirect("/")
+    else:
+        todo = {
+            "todo_id" : id
+        }
+        current_todo = Todo.get_one(todo)
+        return render_template("update_todo_form.html", current_todo=current_todo)
 
 @app.route("/todo/new", methods=["POST"])
 def create_todo():
